@@ -13,7 +13,7 @@
 
 ## 架构
 
-![架构图](https://d1.awsstatic.com/generative-ai/knowledge-base-architecture.png)
+![架构图]()
 
 主要组件：
 
@@ -41,6 +41,7 @@
 
 4. 部署堆栈（默认部署到us-east-1区域，因为Amazon Bedrock在此区域可用）：
    ```
+   aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
    npx cdk deploy
    ```
 
