@@ -66,13 +66,61 @@
 
 ## 配置说明
 
-当前配置使用了以下设置：
+### 默认配置
+
+当前默认配置使用了以下设置：
 
 - **嵌入模型**：TITAN_EMBED_TEXT_V2_1024
 - **分块策略**：固定大小，每块最大500个令牌，重叠率20%
 - **向量类型**：浮点型（FLOAT32）
 
-您可以在`lib/cfn_knowledge_base-stack.ts`文件中修改这些配置。
+### 环境变量配置
+
+您可以通过环境变量自定义知识库的配置，无需修改代码。支持以下环境变量：
+
+| 环境变量 | 描述 | 默认值 |
+|---------|------|-------|
+| `KB_NAME` | 知识库名称 | OpenSearchServerlessKB |
+| `KB_DESCRIPTION` | 知识库描述 | 基于OpenSearch Serverless的Amazon Bedrock知识库 |
+| `KB_INSTRUCTION` | 知识库使用说明 | 使用此知识库回答关于文档的问题。它包含了重要的参考资料。 |
+| `EMBEDDINGS_MODEL_TYPE` | 嵌入模型类型 | TITAN_EMBED_TEXT_V2_1024 |
+| `MAX_TOKENS` | 每个分块的最大令牌数 | 500 |
+| `OVERLAP_PERCENTAGE` | 分块重叠百分比 | 20 |
+| `DATA_SOURCE_NAME` | 数据源名称 | documents |
+
+支持的嵌入模型类型：
+- `TITAN_EMBED_TEXT_V2_1024`
+- `COHERE_EMBED_ENGLISH_V3`
+- `COHERE_EMBED_MULTILINGUAL_V3`
+
+### 使用环境变量部署示例
+
+```bash
+# 设置环境变量
+export KB_NAME="MyCustomKnowledgeBase"
+export EMBEDDINGS_MODEL_TYPE="COHERE_EMBED_MULTILINGUAL_V3"
+export MAX_TOKENS="300"
+export OVERLAP_PERCENTAGE="15"
+
+# 部署堆栈
+npx cdk deploy
+```
+
+您也可以创建一个`.env`文件，然后使用`dotenv-cli`工具加载环境变量：
+
+```bash
+# 安装dotenv-cli
+npm install -g dotenv-cli
+
+# 创建.env文件
+echo "KB_NAME=MyCustomKnowledgeBase
+EMBEDDINGS_MODEL_TYPE=COHERE_EMBED_MULTILINGUAL_V3
+MAX_TOKENS=300
+OVERLAP_PERCENTAGE=15" > .env
+
+# 使用dotenv部署
+dotenv -- npx cdk deploy
+```
 
 ## 常用命令
 
